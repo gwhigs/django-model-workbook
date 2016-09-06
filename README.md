@@ -26,8 +26,8 @@ class MyWorkbook(ModelWorkbook):
     # Name sheets to be created
     worksheets = ['Sheet1']
     
-    def __init__():
-      super(MyWorkbook, self).__init__()
+    def __init__(self, **kwargs):
+      super(MyWorkbook, self).__init__(**kwargs)
       # Write headers
       self.write_headers(plan_ws)
       # Write table data
