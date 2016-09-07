@@ -2,7 +2,6 @@ from __future__ import absolute_import, unicode_literals
 
 from functools import reduce
 
-from django.core.exceptions import ImproperlyConfigured
 from six import BytesIO
 from xlsxwriter import Workbook
 
