@@ -9,6 +9,10 @@ from xlsxwriter import Workbook
 from .utils import apply_outer_border_to_range
 
 
+class ModelWorkbookException(Exception):
+    pass
+
+
 class ModelWorkbook(object):
     """
     A helper for expressing Django models in Excel Workbooks.
@@ -127,6 +131,22 @@ class ModelWorkbook(object):
         }
         apply_outer_border_to_range(self.workbook, ws, options=options)
 
+    def get_sheet_by_name(self, sheet_name):
+        ws = self.worksheet_obj_dict.get(sheet_name)
+        if not ws:
+            raise ModelWorkbookException(
+                'Sheet not found. Make sure you defined it in self.worksheets.'
+            )
+        return ws
+
+    def write_table_to_sheet(self, sheet_name, add_border=True):
+        ws = self.get_sheet_by_name(sheet_name)
+
+        self.write_headers(ws)
+        self.write_table_data(ws)
+        if add_border:
+            self.write_border_to_table(ws)
+
     def get_queryset(self):
         """
         Copy from almost any Django model view (e.g. DetailView).
@@ -137,7 +157,7 @@ class ModelWorkbook(object):
             if self.model:
                 return self.model._default_manager.all()
             else:
-                raise ImproperlyConfigured(
+                raise ModelWorkbookException(
                     "%(cls)s is missing a QuerySet. Define "
                     "%(cls)s.model, %(cls)s.queryset, or override "
                     "%(cls)s.get_queryset()." % {
