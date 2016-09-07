@@ -10,14 +10,19 @@ A wrapper for XlsxWriter to help express Django models as tables in Excel (with 
 from workbooks import ModelWorkbook
 
 class MyWorkbook(ModelWorkbook):
-    # Define a queryset (can also be passed in __init__ kwargs)
+    # Define a queryset. Can also be passed as kwarg (queryset=...) during instantiation
     queryset = MyModel.objects.all()
     
-    # Define queryset fields for table
+    # Or just set `model = ...` (same as in Django CBV)
+    # model = MyModel
+    
+    # Define queryset fields and verbose headers for the table,
+    #  along with any formatting you'd like for headers/data as dicts.
+    # For details on formats see http://xlsxwriter.readthedocs.io/format.html#format-methods-and-format-properties
     table_fields = [
       {
         'header': "My First Field's Header",
-        'field_lkup': 'mynumericmodelfield',
+        'field_lkup': 'my_numeric_model_field',  # Also accepts dotted lookups and functions
         'header_fmts': {'align': 'right'},
         'data_fmts': {'num_format': '#,##0'},
       },
@@ -28,13 +33,11 @@ class MyWorkbook(ModelWorkbook):
     
     def __init__(self, **kwargs):
       super(MyWorkbook, self).__init__(**kwargs)
-      # Write headers
-      self.write_headers(plan_ws)
-      # Write table data
-      self.write_table_data(plan_ws)
-      # Add a border
-      self.write_border_to_table(plan_ws)
-      # Any other non-model related sheet tweaks go here as well...
+      # Write our table to one of the sheets listed in self.worksheets
+      self.write_table_to_sheet('Sheet1')
+      # Any other non-model related sheet changes can go here as well,
+      # you can access XlsxWriter WorkSheet objects with:
+      # xlsxwriter_sheet = self.get_sheet_by_name('Sheet1')
       
 
 # Now we can use our ModelWorkbook to serve Excel files in views (or just save them to disk)
