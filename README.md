@@ -1,5 +1,5 @@
 # django-model-workbook
-A wrapper for XlsxWriter to help express Django models as tables in Excel (with formatting)
+A wrapper for XlsxWriter to help express Django models as formatted tables in Excel
 
 ## Requirements
 - XlsxWriter
