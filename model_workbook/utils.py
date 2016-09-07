@@ -56,7 +56,10 @@ def duplicate_xlsxwriter_format_object(workbook, old_format):
     properties = {}
 
     for property_name in XLSXWRITER_FORMAT_PROPERTIES:
-        properties[property_name] = getattr(old_format, property_name)
+        try:
+            properties[property_name] = getattr(old_format, property_name)
+        except AttributeError:
+            continue
 
     return workbook.add_format(properties)
 

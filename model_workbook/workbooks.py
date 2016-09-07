@@ -36,7 +36,8 @@ class ModelWorkbook(object):
     default_data_fmt = {'valign': 'vcenter'}
     table_striped = True
     table_stripe_fmt = {'bg_color': '#D9D9D9'}
-    # fill table_fields with {
+
+    # Fill table_fields with {
     #   'header': 'Verbose Name',
     #   'field_lkup': 'field.lookup',
     #   'header_fmts': {header_formats},
