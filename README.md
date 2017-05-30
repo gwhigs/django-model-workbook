@@ -43,7 +43,7 @@ class MyWorkbook(ModelWorkbook):
 # Now we can use our ModelWorkbook to serve Excel files in views (or just save them to disk)
 # All file handling is done in memory by default
 workbook = MyWorkbook()
-output = wb.export()
+output = workbook.export()
 response = http.HttpResponse(
   output.read(),
   content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
